@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  Function:
+    Type: String
+    Description: Which function we're managing
+  RunFrequency:
+    Type: Number
+    Description: How often to post
+  TwitterConsumerKey:
+    Type: String
+    NoEcho: 'true'
+    Description: Twitter consumer key
+  TwitterConsumerSecret:
+    Type: String
+    NoEcho: 'true'
+    Description: Twitter consumer secret
+  TwitterAccessToken:
+    Type: String
+    NoEcho: 'true'
+    Description: Twitter access token
+  TwitterAccessSecret:
+    Type: String
+    NoEcho: 'true'
+    Description: Twitter access secret
+Description: twitter-spam
+Resources:
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main.handle
+      Runtime: python2.7
+      Description: Posts to a twitter account
+      CodeUri: functionbuild/
+      MemorySize: 128
+      Timeout: 60
+      Environment:
+        Variables:
+          TWITTER_CONSUMER_KEY: !Ref TwitterConsumerKey
+          TWITTER_CONSUMER_SECRET: !Ref TwitterConsumerSecret
+          TWITTER_ACCESS_TOKEN: !Ref TwitterAccessToken
+          TWITTER_ACCESS_SECRET: !Ref TwitterAccessSecret
+      Events:
+        Timer:
+          Type: Schedule
+          Properties:
+            Schedule: !Sub "cron(0/${RunFrequency} * * * ? *)"
