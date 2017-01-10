@@ -4,7 +4,7 @@
 Lambda functions that, when deployed via the included CloudFormation template, will endlessly post spam to a twitter account. Two functions are included:
 
 - _text_: Tweets a random UUID
-- _qrcode_: Tweest an image containing a QR code of a random UUID
+- _qrcode_: Tweets an image containing a QR code of a random UUID
 
 ## Services Used
 
